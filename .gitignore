@@ -1,0 +1,6 @@
+data
+venv
+data/
+venv/
+index/
+__pycache__/
