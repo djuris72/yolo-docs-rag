@@ -1,0 +1,36 @@
+{"id":"q01","question":"How do I resume an interrupted training run?","gold":["https://docs.ultralytics.com/modes/train/"]}
+{"id":"q02","question":"How do I export a model to ONNX?","gold":["https://docs.ultralytics.com/modes/export/","https://docs.ultralytics.com/integrations/onnx/"]}
+{"id":"q03","question":"How do I run inference on a video file?","gold":["https://docs.ultralytics.com/modes/predict/"]}
+{"id":"q04","question":"What metrics does validation mode report?","gold":["https://docs.ultralytics.com/modes/val/","https://docs.ultralytics.com/guides/yolo-performance-metrics/"]}
+{"id":"q05","question":"How do I track objects across video frames?","gold":["https://docs.ultralytics.com/modes/track/"]}
+{"id":"q06","question":"How do I benchmark a model across different export formats?","gold":["https://docs.ultralytics.com/modes/benchmark/"]}
+{"id":"q07","question":"How do I train a pose estimation model?","gold":["https://docs.ultralytics.com/tasks/pose/"]}
+{"id":"q08","question":"How do I train an instance segmentation model?","gold":["https://docs.ultralytics.com/tasks/segment/"]}
+{"id":"q09","question":"What is an oriented bounding box and which task uses it?","gold":["https://docs.ultralytics.com/tasks/obb/"]}
+{"id":"q10","question":"How do I export a model to TensorRT?","gold":["https://docs.ultralytics.com/integrations/tensorrt/"]}
+{"id":"q11","question":"How do I export a model to OpenVINO?","gold":["https://docs.ultralytics.com/integrations/openvino/"]}
+{"id":"q12","question":"How do I run YOLO from the command line?","gold":["https://docs.ultralytics.com/usage/cli/"]}
+{"id":"q13","question":"How do I install the Ultralytics package?","gold":["https://docs.ultralytics.com/quickstart/"]}
+{"id":"q14","question":"How do I tune hyperparameters automatically?","gold":["https://docs.ultralytics.com/guides/hyperparameter-tuning/"]}
+{"id":"q15","question":"Which argument controls the image size during training?","gold":["https://docs.ultralytics.com/usage/cfg/","https://docs.ultralytics.com/modes/train/"]}
+{"id":"q16","question":"How can I train on more than one GPU?","gold":["https://docs.ultralytics.com/modes/train/"]}
+{"id":"q17","question":"How do I stop training early when the model stops improving?","gold":["https://docs.ultralytics.com/modes/train/","https://docs.ultralytics.com/usage/cfg/"]}
+{"id":"q18","question":"Which setting reduces memory use by changing how many images are processed at once?","gold":["https://docs.ultralytics.com/modes/train/","https://docs.ultralytics.com/usage/cfg/"]}
+{"id":"q19","question":"How do I make predictions only keep detections above a certain certainty?","gold":["https://docs.ultralytics.com/modes/predict/","https://docs.ultralytics.com/usage/cfg/"]}
+{"id":"q20","question":"How can I evaluate a model more reliably with cross-validation?","gold":["https://docs.ultralytics.com/guides/kfold-cross-validation/"]}
+{"id":"q21","question":"What do precision and recall mean for an object detector?","gold":["https://docs.ultralytics.com/guides/yolo-performance-metrics/"]}
+{"id":"q22","question":"What are common problems when training or running YOLO and how do I fix them?","gold":["https://docs.ultralytics.com/guides/yolo-common-issues/"]}
+{"id":"q23","question":"How do I run my model on an iPhone using Apple's format?","gold":["https://docs.ultralytics.com/integrations/coreml/"]}
+{"id":"q24","question":"How do I deploy a model on a phone using TensorFlow Lite?","gold":["https://docs.ultralytics.com/integrations/tflite/"]}
+{"id":"q25","question":"How do I run my own code at the end of each training epoch?","gold":["https://docs.ultralytics.com/usage/callbacks/"]}
+{"id":"q26","question":"How should I format my own dataset for object detection?","gold":["https://docs.ultralytics.com/datasets/detect/"]}
+{"id":"q27","question":"What is the difference between detection and segmentation and how do I train each?","gold":["https://docs.ultralytics.com/tasks/detect/","https://docs.ultralytics.com/tasks/segment/"]}
+{"id":"q28","question":"How do I export a model and then check the accuracy of the exported version?","gold":["https://docs.ultralytics.com/modes/export/","https://docs.ultralytics.com/modes/val/"]}
+{"id":"q29","question":"Which export formats are best for CPU inference and how do I use them?","gold":["https://docs.ultralytics.com/modes/export/","https://docs.ultralytics.com/integrations/openvino/","https://docs.ultralytics.com/integrations/onnx/"]}
+{"id":"q30","question":"How do I count objects crossing a line in a video?","gold":["https://docs.ultralytics.com/guides/object-counting/","https://docs.ultralytics.com/modes/track/"]}
+{"id":"q31","question":"How do I find the best hyperparameters and then train with them?","gold":["https://docs.ultralytics.com/guides/hyperparameter-tuning/","https://docs.ultralytics.com/modes/train/"]}
+{"id":"q32","question":"How do I train a model on audio data?","gold":[]}
+{"id":"q33","question":"How do I fine-tune a speech recognition model with Ultralytics?","gold":[]}
+{"id":"q34","question":"How do I generate images from text prompts with YOLO?","gold":[]}
+{"id":"q35","question":"How do I deploy YOLO to a Nintendo Switch?","gold":[]}
+{"id":"q36","question":"How do I train a large language model with Ultralytics?","gold":[]}
