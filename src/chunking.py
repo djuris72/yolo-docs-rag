@@ -5,15 +5,18 @@ from dataclasses import dataclass
 from pathlib import Path
 
 MAX_CHARS = 1500
+TABLE_CHARS = 800  # tables are cut into small pieces so one argument is not buried among dozens
 MIN_CHARS = 60
 DOCS_BASE_URL = "https://docs.ultralytics.com"
 
 FRONT_MATTER = re.compile(r"\A---\n.*?\n---\n", re.S)
+INCLUDE = re.compile(r"\{%\s*include\s+[\"']([^\"']+)[\"']\s*%\}")
 IFRAME = re.compile(r"<iframe.*?</iframe>", re.S)
 HTML_TAG = re.compile(r"</?(?:p|br|img|strong|div|span)\b[^>]*>")
 MD_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 MD_LINK = re.compile(r"\[([^\]]+)\]\([^)]*\)")
 HEADING = re.compile(r"^(#{1,3})\s+(.+?)\s*$")
+TABLE_SEP = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
 
 
 @dataclass
@@ -25,10 +28,24 @@ class Chunk:
     heading: str  # heading path
 
 
+def expand_includes(md: str, docs_dir: Path) -> str:
+    """Inline MkDocs macro includes (e.g. the argument tables); unresolved includes are dropped."""
+
+    def repl(m):
+        f = docs_dir / m.group(1)
+        return f.read_text(encoding="utf-8") if f.exists() else ""
+
+    return INCLUDE.sub(repl, md)
+
+
 def clean_prose(line: str) -> str:
     line = MD_IMAGE.sub("", line)
     line = MD_LINK.sub(r"\1", line)
-    return HTML_TAG.sub("", line)
+    line = HTML_TAG.sub("", line)
+    if line.lstrip().startswith("|"):  # table padding only aligns columns and wastes embedding tokens
+        line = re.sub(r"[ \t]{2,}", " ", line)
+        line = re.sub(r"-{3,}", "---", line)
+    return line
 
 
 def to_url(rel_path: Path) -> str:
@@ -84,19 +101,27 @@ def to_blocks(lines: list[str]) -> list[str]:
         blocks.append("\n".join(cur).strip())
     return [b for b in blocks if b]
 
+
 def split_big(block: str) -> list[str]:
-    """Split an oversized block (huge code block or table) on line boundaries."""
-    if len(block) <= 2 * MAX_CHARS:
+    """Split an oversized block on line boundaries; table pieces repeat the header rows."""
+    lines = block.splitlines()
+    is_table = len(lines) > 2 and lines[0].lstrip().startswith("|") and bool(TABLE_SEP.match(lines[1]))
+    limit = TABLE_CHARS if is_table else 2 * MAX_CHARS
+    if len(block) <= limit:
         return [block]
-    out, cur = [], ""
-    for line in block.splitlines():
-        if cur and len(cur) + len(line) + 1 > MAX_CHARS:
-            out.append(cur)
-            cur = line
-        else:
-            cur = f"{cur}\n{line}" if cur else line
-    out.append(cur)
+    header = lines[:2] if is_table else []
+    body = lines[2:] if is_table else lines
+    size = TABLE_CHARS if is_table else MAX_CHARS
+    out, cur = [], list(header)
+    for line in body:
+        if len(cur) > len(header) and len("\n".join(cur)) + len(line) + 1 > size:
+            out.append("\n".join(cur))
+            cur = list(header)
+        cur.append(line)
+    if len(cur) > len(header):
+        out.append("\n".join(cur))
     return out
+
 
 def pack(blocks: list[str]) -> list[str]:
     """Greedily pack blocks into pieces of at most MAX_CHARS (a lone big block stays whole)."""
@@ -116,8 +141,9 @@ def pack(blocks: list[str]) -> list[str]:
 def chunk_file(file: Path, docs_root: Path) -> list[Chunk]:
     rel = file.relative_to(docs_root)
     url = to_url(rel)
+    md = expand_includes(file.read_text(encoding="utf-8"), docs_root.parent)
     chunks = []
-    for heading, lines in split_sections(file.read_text(encoding="utf-8")):
+    for heading, lines in split_sections(md):
         for piece in pack(to_blocks(lines)):
             if len(piece) < MIN_CHARS:
                 continue

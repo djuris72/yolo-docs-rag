@@ -1,6 +1,8 @@
 Eksperiment	hit@1	hit@5	MRR
-Baseline (bge-small, bez filtera)	0.35	0.87	0.578
-Bez yolov5/ i platform/	0.52	0.94	0.690
+Baseline (bge-small)	0.35	0.87	0.578
++ filter (bez yolov5/, platform/)	0.52	0.94	0.690
++ reranker (bez filtera)	0.58	0.94	0.735
++ filter + reranker	0.71	0.94	0.802
 
 
 (venv) D:\code\yolo-docs-rag>python -m eval.run_eval

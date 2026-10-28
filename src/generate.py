@@ -11,13 +11,15 @@ OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/chat")
 MODEL = os.getenv("LLM_MODEL", "qwen2.5:3b")
 K = 4
 MAX_CHUNK_CHARS = 1500
-EXCLUDE: tuple = ("yolov5", "platform")  
+EXCLUDE: tuple = ("yolov5", "platform")
 
 SYSTEM = (
     "You answer questions about Ultralytics YOLO using ONLY the numbered context passages. "
-    "Cite the passages you used like [1] or [2]. "
-    "If the context does not contain the answer, reply exactly: "
-    "'I could not find this in the Ultralytics documentation.' Do not use outside knowledge."
+    "Write a short answer (1-4 sentences or a brief code example) and put citations like [1] after the "
+    "statements they support. Never reply with only a citation. "
+    "If the context does not contain the answer, reply with exactly this sentence and nothing else: "
+    "'I could not find this in the Ultralytics documentation.' "
+    "Never add that sentence to an answer. Do not use outside knowledge."
 )
 
 
@@ -42,11 +44,15 @@ def answer(question: str, retriever: Retriever) -> dict:
         timeout=600,
     )
     resp.raise_for_status()
-    return {"answer": resp.json()["message"]["content"], "sources": [p["url"] for p in passages]}
+    return {
+        "answer": resp.json()["message"]["content"],
+        "sources": [p["url"] for p in passages],
+        "headings": [p["heading"] for p in passages],
+    }
 
 
 if __name__ == "__main__":
-    out = answer(" ".join(sys.argv[1:]), Retriever())
+    out = answer(" ".join(sys.argv[1:]), Retriever(rerank=True))
     print(out["answer"], "\n\nSources:")
     for i, u in enumerate(out["sources"], 1):
         print(f"[{i}] {u}")
