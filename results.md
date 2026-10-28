@@ -87,15 +87,17 @@ python -m eval.run_gen_eval --questions eval/heldout.jsonl
 
 | Metric | Value |
 |---|---|
-| Retrieval hit@1 (n = 8) | TBD |
-| Retrieval hit@5 | TBD |
-| Retrieval MRR | TBD |
-| False refusals | TBD |
-| Correct refusals (n = 2) | TBD |
-| Keyword correct (n = 8) | TBD |
-| Cites `[n]` | TBD |
+| Retrieval hit@1 (n = 8) | 1.00 |
+| Retrieval hit@5 | 1.00 |
+| Retrieval MRR | 1.000 |
+| False refusals | 0.00 |
+| Correct refusals (n = 2) | 2/2 |
+| Keyword correct (n = 8) | 8/8 |
+| Cites `[n]` | 0.88 (7 of 8) |
+| Source in context | 1.00 |
+| Seconds / question | 16.1 |
 
-Interpretation notes to write after the run: with n = 8, a single question is 12.5 points, so only a large gap against the development numbers means something. The three pages are narrow, so this checks generalization to new pages, not breadth of the documentation.
+All 8 answerable questions were retrieved at rank 1 and answered with the right keyword, and both unanswerable questions were refused. I read this as "no sign of overfitting to the development set", not as a measure of overall quality: the held-out pages have distinctive vocabulary, there are no argument-table or multi-page questions, and with n = 8 a perfect score is consistent with a true rate anywhere above roughly 63%.
 
 ## Changes to the evaluation itself
 
