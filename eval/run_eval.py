@@ -21,12 +21,13 @@ def unique_pages(results):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--questions", default="eval/questions.jsonl")
     ap.add_argument("--exclude", nargs="*", default=[])
     ap.add_argument("--rerank", action="store_true")
     args = ap.parse_args()
-    print("exclude:", args.exclude, args.rerank or "none")
+    print(f"questions: {args.questions} | exclude: {args.exclude or 'none'} | rerank: {args.rerank}")
 
-    qs = [json.loads(l) for l in Path("eval/questions.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    qs = [json.loads(l) for l in Path(args.questions).read_text(encoding="utf-8").splitlines() if l.strip()]
     qs = [q for q in qs if q["gold"]]
     ret = Retriever(rerank=args.rerank)
     hit1 = hitk = mrr = 0.0

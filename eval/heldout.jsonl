@@ -1,0 +1,10 @@
+{"id":"h01","question":"How do I run detection with the faster head that does not need non-maximum suppression?","gold":["https://docs.ultralytics.com/guides/end2end-detection/"],"must_include":["nms"]}
+{"id":"h02","question":"My exported ONNX model has an output shape of (1, 300, 6). Is that expected?","gold":["https://docs.ultralytics.com/guides/end2end-detection/"],"must_include":["nms"]}
+{"id":"h03","question":"How can I change the maximum number of detections that an exported end-to-end model returns?","gold":["https://docs.ultralytics.com/guides/end2end-detection/"],"must_include":["max_det"]}
+{"id":"h04","question":"Can I share one YOLO model between several Python threads?","gold":["https://docs.ultralytics.com/guides/yolo-thread-safe-inference/"],"must_include":["threadinglocked|separate|dedicated"]}
+{"id":"h05","question":"Which decorator makes a shared model safe to call from multiple threads?","gold":["https://docs.ultralytics.com/guides/yolo-thread-safe-inference/"],"must_include":["threadinglocked"]}
+{"id":"h06","question":"How do I serve a YOLO model with NVIDIA Triton and then run predictions against it?","gold":["https://docs.ultralytics.com/guides/triton-inference-server/"],"must_include":["http"]}
+{"id":"h07","question":"What format should I export to before putting a model into a Triton model repository?","gold":["https://docs.ultralytics.com/guides/triton-inference-server/"],"must_include":["onnx"]}
+{"id":"h08","question":"Why use an inference server that groups several requests together before running them?","gold":["https://docs.ultralytics.com/guides/triton-inference-server/"],"must_include":["batching"]}
+{"id":"h09","question":"How do I use Ultralytics to translate text between languages?","gold":[]}
+{"id":"h10","question":"How do I run YOLO on a quantum computer?","gold":[]}

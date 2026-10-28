@@ -1,5 +1,6 @@
 """Generation evaluation: refusals, citations, keyword correctness, latency."""
 
+import argparse
 import json
 import re
 import time
@@ -17,7 +18,12 @@ def keywords_ok(low: str, kw: list[str]) -> bool:
 
 
 def main():
-    qs = [json.loads(l) for l in Path("eval/questions.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--questions", default="eval/questions.jsonl")
+    args = ap.parse_args()
+    qpath = Path(args.questions)
+
+    qs = [json.loads(l) for l in qpath.read_text(encoding="utf-8").splitlines() if l.strip()]
     ret = Retriever(rerank=True)
     rows = []
     for q in qs:
@@ -43,21 +49,21 @@ def main():
         )
         print(q["id"], "refused" if refused else "answered", f"{rows[-1]['seconds']}s")
 
-    Path(f"eval/gen_{MODEL.replace(':', '_')}.jsonl").write_text(
-        "\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8"
-    )
+    out_file = Path("eval") / f"gen_{MODEL.replace(':', '_')}_{qpath.stem}.jsonl"
+    out_file.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
 
     ans = [r for r in rows if r["answerable"]]
     una = [r for r in rows if not r["answerable"]]
     kw_rows = [r for r in ans if r["correct"] is not None]
     answered = [r for r in ans if not r["refused"]]
-    print(f"\nmodel={MODEL}")
+    print(f"\nmodel={MODEL}  questions={qpath.name}  (details in {out_file})")
     print(f"answerable n={len(ans)}  false refusals={sum(r['refused'] for r in ans) / len(ans):.2f}")
     print(f"  source in context={sum(bool(r['source_hit']) for r in ans) / len(ans):.2f}")
     print(f"  cited [n]={sum(r['cited'] for r in answered) / max(1, len(answered)):.2f}")
     print(f"  citation-only answers={sum(r['empty'] for r in rows)}")
-    print(f"  keyword correct={sum(bool(r['correct']) for r in kw_rows) / len(kw_rows):.2f} (n={len(kw_rows)})")
-    print(f"unanswerable n={len(una)}  correct refusals={sum(r['refused'] for r in una) / len(una):.2f}")
+    print(f"  keyword correct={sum(bool(r['correct']) for r in kw_rows) / max(1, len(kw_rows)):.2f} (n={len(kw_rows)})")
+    if una:
+        print(f"unanswerable n={len(una)}  correct refusals={sum(r['refused'] for r in una) / len(una):.2f}")
     print(f"avg seconds/question={sum(r['seconds'] for r in rows) / len(rows):.1f}")
 
 
