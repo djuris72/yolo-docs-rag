@@ -109,7 +109,7 @@ The image holds the code only. The index and the model cache are mounted, so the
 docker build -t yolo-docs-rag .
 docker run --rm -p 8000:8000 ^
   -v "%cd%\index:/app/index" ^
-  -v "D:\hf_cache:/app/.hf_cache" ^
+  -v "%USERPROFILE%\.cache\huggingface" ^
   -e OLLAMA_URL=http://host.docker.internal:11434/api/chat ^
   -e LLM_MODEL=qwen2.5:7b ^
   yolo-docs-rag
@@ -186,10 +186,10 @@ results.md        all measurements and per-question notes
 - [x] Local-LLM generation with refusal prompt, prompt v1 vs v2
 - [x] Chunking bug found and fixed through evaluation (macros)
 - [x] FastAPI endpoint, Docker image, unit tests
-- [ ] Held-out run (single run, results in `results.md`)
+- [x] Held-out run (single run, results in `results.md`)
 - [ ] Hybrid search (BM25 + vectors) and a stronger reranker
 - [ ] Deduplicate near-identical passages before generation
 
 ## License
 
-Code in this repository: add a `LICENSE` file (MIT is a common choice). The Ultralytics documentation is licensed by Ultralytics under AGPL-3.0 and is not included here.
+   Code in this repository: [MIT](LICENSE). The Ultralytics documentation is licensed by Ultralytics under AGPL-3.0 and is not included here.

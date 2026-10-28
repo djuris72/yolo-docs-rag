@@ -1,5 +1,4 @@
-data
-venv
+.pytest_cache/
 data/
 venv/
 index/
