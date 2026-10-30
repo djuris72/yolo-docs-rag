@@ -13,7 +13,7 @@ I use YOLO (it powers my [ANPR thesis project](https://github.com/djuris72/ANPR)
 | Retrieval, hit@1 (31 questions) | 0.35 baseline → **0.71** with a filter and a cross-encoder reranker |
 | Retrieval, hit@5 | 0.87 → **0.97** after fixing a chunking bug (see below) |
 | Generation, `qwen2.5:7b`, prompt v2 | 0 false refusals, 5/5 correct refusals, keyword check 13/13, about 16 s per question on a GTX 1660 Super |
-| eld-out set (8 answerable + 2 unanswerable, run once) | hit@1 1.00, keyword 8/8, 2/2 correct refusals; n is small, see results.md. |
+| Held-out set (8 answerable + 2 unanswerable, run once) | hit@1 1.00, keyword 8/8, 2/2 correct refusals; n is small, see results.md. |
 
 The question set was used while developing the system, so the development numbers are optimistic. The held-out set exists to check that.
 
@@ -109,7 +109,7 @@ The image holds the code only. The index and the model cache are mounted, so the
 docker build -t yolo-docs-rag .
 docker run --rm -p 8000:8000 ^
   -v "%cd%\index:/app/index" ^
-  -v "%USERPROFILE%\.cache\huggingface" ^
+  -v "%USERPROFILE%\.cache\huggingface:/app/.hf_cache" ^
   -e OLLAMA_URL=http://host.docker.internal:11434/api/chat ^
   -e LLM_MODEL=qwen2.5:7b ^
   yolo-docs-rag
